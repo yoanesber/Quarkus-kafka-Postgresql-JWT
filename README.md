@@ -211,7 +211,7 @@ Install `make` if not already available:
 Install `make` using **APT**  
 
 ```bash
-sudo apt install makesudo apt update
+sudo apt update
 sudo apt install make
 ```  
 
@@ -229,17 +229,17 @@ If you're using **PowerShell**:
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```  
 
-- Verify Chocolatey installation:  
+- Verify `Chocolatey` installation:  
 ```bash
 choco --version
 ```  
 
-- Install make via Chocolatey:  
+- Install `make` via `Chocolatey`:  
 ```bash
 choco install make
 ```  
 
-After installation, **restart your terminal** or ensure make is available in your `PATH`.  
+After installation, **restart your terminal** or ensure `make` is available in your `PATH`.  
 
 ### 🔁 5. Clone the Project  
 
@@ -252,7 +252,7 @@ cd Quarkus-kafka-Postgresql-JWT
 
 ### 🔐 6. Generate JWT RSA Key Pair  
 
-Generate a private and public key pair to **sign** and **verify** JWT tokens:  
+Generate a `private` and `public key` pair to **sign** and **verify** JWT tokens:  
 
 **Using `make`:**  
 
@@ -270,7 +270,7 @@ This will generate `privateKey.pem` and `publicKey.pem` in the `src/main/resourc
 
 **⚠️ Security Note:**  
 The `privateKey.pem` file is included in `.gitignore` to **prevent accidental commits to the repository**, especially since this project will be made **public**.  
-Never expose your private key in version control to protect your JWT signing mechanism.
+**Never expose your private key** in version control to protect your JWT signing mechanism. You **must generate** your own `private` and `public key` pair.  
 
 ### ⚙️ 7. Configure Application Properties  
 
@@ -285,7 +285,7 @@ quarkus.http.cors=true
 # PostgreSQL database configuration (Dev)
 %dev.quarkus.datasource.db-kind=postgresql
 %dev.quarkus.datasource.username=postgres
-%dev.quarkus.datasource.password=<password>
+%dev.quarkus.datasource.password=P@ssw0rd
 %dev.quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5432/quarkus_kafka_postgresql_dev
 %dev.quarkus.hibernate-orm.database.generation=drop-and-create
 %dev.quarkus.hibernate-orm.log.sql=true
@@ -294,7 +294,7 @@ quarkus.http.cors=true
 # PostgreSQL database configuration (Test)
 %test.quarkus.datasource.db-kind=postgresql
 %test.quarkus.datasource.username=postgres
-%test.quarkus.datasource.password=<password>
+%test.quarkus.datasource.password=P@ssw0rd
 %test.quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5432/quarkus_kafka_postgresql_test
 %test.quarkus.hibernate-orm.database.generation=drop-and-create
 %test.quarkus.hibernate-orm.log.sql=true
@@ -302,12 +302,11 @@ quarkus.http.cors=true
 
 # JWT configuration
 mp.jwt.verify.publickey.location=publicKey.pem
-mp.jwt.verify.issuer=http://yoanesber.com/issuer
-mp.jwt.verify.token.age=60
+mp.jwt.verify.issuer=http://localhost:8081/realms/quarkus
+mp.jwt.verify.token.age=48
 quarkus.http.auth.permission.authenticated.paths=/api/*
 quarkus.http.auth.permission.authenticated.policy=authenticated
 smallrye.jwt.sign.key.location=privateKey.pem
-# quarkus.native.resources.includes=./publicKey.pem
 
 
 # Kafka configuration
@@ -342,7 +341,9 @@ This will run the integration and unit tests.
 
 ### 🚀 9. Run the Application  
 
-Once everything is configured and tests pass, you can start the application in development mode:  
+Once everything is configured and tests pass, you can start the application in `development` mode:  
+
+**⚠️ Note:** Make sure your `quarkus_kafka_postgresql_dev` database exists.  
 
 ```bash
 make run
@@ -504,7 +505,7 @@ Authorization: Bearer <JWT_TOKEN>
 
 - **Precondition**:  
     - Login berhasil dan mendapatkan token JWT valid  
-    - Token disisipkan dalam header Authorization: Bearer <JWT_TOKEN>  
+    - Token disisipkan dalam header `Authorization: Bearer <JWT_TOKEN>`  
 
 **Expected Response (`200 OK`):**  
 
@@ -600,8 +601,8 @@ POST http://localhost:8081/auth/login
 
 **Kafka Producer:**  
 
-- Listens to `security-events` topic  
-- Persists each received event into the `security_event` table in PostgreSQL  
+- Publishes a message to the Kafka topic `security-events`  
+- Payload contains security event details (e.g., username, IP address, user agent, path, reason for failure, etc.)  
 
 ```bash
 2025-05-10 04:19:21,866 INFO  [com.yoa.qua.ser.kaf.SecurityEventProducerService] (executor-thread-1) Sending security event: {"id":null,"eventType":"UNAUTHORIZED","username":"invalid_user","ipAddress":"127.0.0.1","userAgent":"PostmanRuntime/7.43.4","httpMethod":"POST","path":"/auth/login","failMessage":"Invalid username or password","timestamp":"2025-05-10T04:19:21.8665771"}
@@ -641,3 +642,13 @@ You should see an entry like:
 
 For full coverage, refer to the included **Postman Collection**:  
 [Quarkus.postman_collection.json](https://github.com/user-attachments/files/20128551/Quarkus.postman_collection.json)
+
+---
+
+## 🔗 Related Repositories  
+
+- For the Redis Stream as Message Producer implementation, check out [Order Payment Service with Redis Streams as Reliable Message Producer for PAYMENT_SUCCESS / PAYMENT_FAILED Events](https://github.com/yoanesber/Spring-Boot-Redis-Stream-Producer).  
+- For the Redis Stream as Message Consumer implementation, check out [Spring Boot Redis Stream Consumer with ThreadPoolTaskScheduler Integration](https://github.com/yoanesber/Spring-Boot-Redis-Stream-Consumer).  
+- For the Redis Publisher implementation, check out [Spring Boot Redis Publisher with Lettuce](https://github.com/yoanesber/Spring-Boot-Redis-Publisher-Lettuce).  
+- For the Redis Subscriber implementation, check out [Spring Boot Redis Subscriber with Lettuce](https://github.com/yoanesber/Spring-Boot-Redis-Subscriber-Lettuce).  
+- For the RabbitMQ as Publisher and Consumer, check out [Order Payment REST API with RabbitMQ Integration](https://github.com/yoanesber/Spring-Boot-Order-Payment-RabbitMQ).  
