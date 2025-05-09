@@ -88,7 +88,7 @@ hs_err_pid*
 .env.development
 .env.testing
 .env.production
-application.properties
+!application.properties
 application-dev.properties
 application-test.properties
 application-prod.properties

@@ -17,7 +17,7 @@ INSERT INTO department (id, dept_name, active, created_by, created_date, updated
 
 --
 -- Data for Name: users;
--- Password: P@ssw0rd
+-- Password for all users: P@ssw0rd
 --
 
 INSERT INTO users (id, username, password, email, firstname, lastname, is_enabled, is_account_non_expired, is_account_non_locked, is_credentials_non_expired, is_deleted, account_expiration_date, credentials_expiration_date, user_type, last_login, created_by, created_date, updated_by, updated_date) VALUES (1, 'admin', '$2a$10$eP5Sddi7Q5Jv6seppeF93.XsWGY8r4PnsqprWGb5AxsZ9TpwULIGa', 'admin@myemail.com', 'Admin', 'Admin', true, true, true, true, false, '2026-01-30 23:59:59+07', '2026-01-30 23:59:59+07', 'USER_ACCOUNT', '2025-05-09 12:00:59+07', 0, '2025-05-09 09:00:59+07', 0, '2025-05-09 09:00:59+07');

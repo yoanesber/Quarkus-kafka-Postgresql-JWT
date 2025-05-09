@@ -26,7 +26,7 @@ This project is a backend API developed with **Quarkus**, integrating **PostgreS
 
 
 ### 🔐 Authentication Flow  
-- **Login Endpoint** — Users authenticate via `/api/v1/auth/login` using `userName` and `password`.  
+- **Login Endpoint** — Users authenticate via `/auth/login` using `userName` and `password`.  
 
 - **On Success** — A **JWT token** is returned  
     - This token **must be attached** as an `Authorization: Bearer <token>` header for all secured API requests.  
@@ -252,23 +252,29 @@ cd Quarkus-kafka-Postgresql-JWT
 
 ### 🔐 6. Generate JWT RSA Key Pair  
 
-Generate a private and public key pair to sign and verify JWT tokens:  
+Generate a private and public key pair to **sign** and **verify** JWT tokens:  
 
-Using `make`:  
+**Using `make`:**  
+
 ```bash
 make generate-jwt-keys
 ```  
 
-Or manually:  
+**Or manually:**  
+
 ```bash
 bash generate-jwt-keys.sh
 ```  
 
 This will generate `privateKey.pem` and `publicKey.pem` in the `src/main/resources/` directory.  
 
+**⚠️ Security Note:**  
+The `privateKey.pem` file is included in `.gitignore` to **prevent accidental commits to the repository**, especially since this project will be made **public**.  
+Never expose your private key in version control to protect your JWT signing mechanism.
+
 ### ⚙️ 7. Configure Application Properties  
 
-Set up your database, Kafka, and JWT configuration in:  
+Set up your **database**, **Kafka**, and **JWT configuration** in:  
 
 ```properties
 # Quarkus configuration file
@@ -311,13 +317,11 @@ kafka.bootstrap.servers=localhost:9092
 mp.messaging.outgoing.security-events-outgoing.connector=smallrye-kafka
 mp.messaging.outgoing.security-events-outgoing.topic=security-events
 mp.messaging.outgoing.security-events-outgoing.value.serializer=org.apache.kafka.common.serialization.StringSerializer
-mp.messaging.outgoing.security-events-outgoing.bootstrap.servers=localhost:9092
 
 # Channel for receiving Security Event Monitoring
 mp.messaging.incoming.security-events-incoming.connector=smallrye-kafka
 mp.messaging.incoming.security-events-incoming.topic=security-events
 mp.messaging.incoming.security-events-incoming.value.deserializer=org.apache.kafka.common.serialization.StringDeserializer
-mp.messaging.incoming.security-events-incoming.bootstrap.servers=localhost:9092
 ```  
 
 - Ensure that:  
@@ -561,6 +565,79 @@ Authorization: Bearer invalid.token.here
     - Status code is `401`  
     - Message menjelaskan bahwa autentikasi gagal  
     - Tidak ada data yang dikembalikan  
+
+
+### 3. Kafka Security Event Monitoring Scenario  
+
+**Scenario:** Failed Login triggers **Kafka Producer & Consumer**  
+
+**Endpoint:**  
+```bash
+POST http://localhost:8081/auth/login
+```  
+
+**Invalid Request Body:**  
+
+```json
+{
+  "userName": "invalid_user",
+  "password": "P@ssw0rd"
+}
+```  
+
+**Expected HTTP Response (401 Unauthorized):**  
+
+```json
+{
+    "message": "Invalid username or password",
+    "error": "Unauthorized",
+    "path": "/auth/login",
+    "status": 401,
+    "data": null,
+    "timestamp": "2025-05-09T21:10:57.750492Z"
+}
+```  
+
+**Kafka Producer:**  
+
+- Listens to `security-events` topic  
+- Persists each received event into the `security_event` table in PostgreSQL  
+
+```bash
+2025-05-10 04:19:21,866 INFO  [com.yoa.qua.ser.kaf.SecurityEventProducerService] (executor-thread-1) Sending security event: {"id":null,"eventType":"UNAUTHORIZED","username":"invalid_user","ipAddress":"127.0.0.1","userAgent":"PostmanRuntime/7.43.4","httpMethod":"POST","path":"/auth/login","failMessage":"Invalid username or password","timestamp":"2025-05-10T04:19:21.8665771"}
+```  
+
+**Kafka Consumer:**  
+
+- Listens to `security-events` topic  
+- Persists each received event into the `security_event` table in PostgreSQL  
+
+```bash
+2025-05-10 04:19:21,866 INFO  [com.yoa.qua.ser.kaf.SecurityEventConsumerService] (vert.x-worker-thread-1) Received message: {"id":null,"eventType":"UNAUTHORIZED","username":"invalid_user","ipAddress":"127.0.0.1","userAgent":"PostmanRuntime/7.43.4","httpMethod":"POST","path":"/auth/login","failMessage":"Invalid username or password","timestamp":"2025-05-10T04:19:21.8665771"}
+[Hibernate]
+    insert
+    into
+        security_event
+        (event_type, fail_message, http_method, ip_address, path, timestamp, user_agent, username, id)
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+2025-05-10 04:19:21,866 INFO  [com.yoa.qua.ser.kaf.SecurityEventConsumerService] (vert.x-worker-thread-1) Security event persisted: SecurityEvent(id=e523d0ea-32fd-4e27-a129-f4600ff753eb, eventType=UNAUTHORIZED, username=invalid_user, ipAddress=127.0.0.1, userAgent=PostmanRuntime/7.43.4, httpMethod=POST, path=/auth/login, failMessage=Invalid username or password, timestamp=2025-05-10T04:19:21.866577100)
+```  
+
+**Verification:**  
+
+After triggering the invalid login, run the following query in your PostgreSQL DB:  
+
+```sql
+SELECT * FROM security_event ORDER BY timestamp DESC;
+```  
+
+You should see an entry like:  
+
+![Image](https://github.com/user-attachments/assets/83aa3b55-6326-4541-a27b-38edcf893764)  
+
+
 
 For full coverage, refer to the included **Postman Collection**:  
 [Quarkus.postman_collection.json](https://github.com/user-attachments/files/20128551/Quarkus.postman_collection.json)

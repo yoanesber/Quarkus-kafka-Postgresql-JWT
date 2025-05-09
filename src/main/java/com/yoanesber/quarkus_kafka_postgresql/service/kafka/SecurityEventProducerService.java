@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
+import org.jboss.logging.Logger;
 
 import com.yoanesber.quarkus_kafka_postgresql.entity.SecurityEvent;
 
@@ -25,12 +26,15 @@ public class SecurityEventProducerService {
     private final Emitter<String> securityEventEmitter;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final Logger LOGGER = Logger.getLogger(SecurityEventProducerService.class);
+
     public SecurityEventProducerService(@Channel("security-events-outgoing") Emitter<String> securityEventEmitter) {
         this.securityEventEmitter = securityEventEmitter;
     }
 
     public void sendSecurityEvent(String eventType, String userName, String failMessage) {
         try {
+            // Validate input parameters
             if (currentVertxRequest == null) {
                 throw new IllegalStateException("CurrentVertxRequest is not available.");
             }
@@ -55,6 +59,9 @@ public class SecurityEventProducerService {
                     path,
                     failMessage
                 ));
+
+            // Log the security event
+            LOGGER.infof("Sending security event: %s", jsonPayload);
 
             securityEventEmitter.send(jsonPayload);
         } catch (Exception e) {

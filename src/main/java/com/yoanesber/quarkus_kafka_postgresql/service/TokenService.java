@@ -19,7 +19,7 @@ public class TokenService {
         return Jwt.issuer(jwt_issuer) // Set the issuer of the token; The issuer is the entity that creates the token.
             .upn(userName) // Set the subject of the token; The subject is the user for whom the token is issued.
             .groups(roles) // Set the groups of the token; The groups are the roles or permissions associated with the user.
-            .expiresAt(Instant.now().plus(token_age, ChronoUnit.MINUTES)) // Set the expiration time of the token; The expiration time is when the token will no longer be valid.
+            .expiresAt(Instant.now().plus(token_age, ChronoUnit.HOURS)) // Set the expiration time of the token; The expiration time is when the token will no longer be valid.
             .issuedAt(java.time.Instant.now()) // Set the issued time of the token; The issued time is when the token was created.
             .sign();
     }
