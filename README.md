@@ -636,7 +636,7 @@ SELECT * FROM security_event ORDER BY timestamp DESC;
 
 You should see an entry like:  
 
-![Image](https://github.com/user-attachments/assets/83aa3b55-6326-4541-a27b-38edcf893764)  
+![image](/uploads/55e01da21135e138ff9c3e69f19be5c3/image.png)  
 
 
 
