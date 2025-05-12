@@ -534,11 +534,7 @@ Authorization: Bearer <JWT_TOKEN>
 - **Validation**:  
     - Status code is `200`  
     - The data array contains a list of departments.  
-<<<<<<< HEAD
     - Message indicates data was successfully retrieved  
-=======
-    - Message indicates data retrieved successfully  
->>>>>>> 642a92b (Enhance README)
 
 
 ### Scenario 2: Invalid Token - Unauthorized Access
@@ -568,7 +564,7 @@ Authorization: Bearer invalid.token.here
 
 - **Validation**:  
     - Status code is `401`  
-    - Message explains that authentication failed  
+    - Message indicates that authentication failed  
     - No data returned  
 
 
