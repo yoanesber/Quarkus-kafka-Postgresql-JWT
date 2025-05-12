@@ -177,7 +177,7 @@ Here’s a simplified summary:
 ```bash
 sudo wget https://downloads.apache.org/kafka/4.0.0/kafka_2.13-4.0.0.tgz
 tar -xzf kafka_2.13-4.0.0.tgz
-mv kafka_2.13-4.0.0 kafka-
+mv kafka_2.13-4.0.0 kafka
 cd kafka
 ```  
 
@@ -201,7 +201,7 @@ bin/kafka-server-start.sh config/server.properties
 Once the Kafka server has successfully launched, you will have a basic Kafka environment running and ready to use.  
 
 
-### 🧰 4. Install make (Optional but Recommended)  
+### 🧰 4. Install `make` (Optional but Recommended)  
 This project uses a `Makefile` to streamline common tasks.  
 
 Install `make` if not already available:  
@@ -636,7 +636,7 @@ SELECT * FROM security_event ORDER BY timestamp DESC;
 
 You should see an entry like:  
 
-![image](/uploads/55e01da21135e138ff9c3e69f19be5c3/image.png)  
+![Image](https://github.com/user-attachments/assets/83aa3b55-6326-4541-a27b-38edcf893764)  
 
 
 
