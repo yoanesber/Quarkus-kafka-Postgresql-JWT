@@ -504,8 +504,8 @@ Authorization: Bearer <JWT_TOKEN>
 ### Scenario 1: Valid Token - Successful Retrieval  
 
 - **Precondition**:  
-    - Login berhasil dan mendapatkan token JWT valid  
-    - Token disisipkan dalam header `Authorization: Bearer <JWT_TOKEN>`  
+    - Login successful and get valid JWT token  
+    - Tokens are inserted in the header `Authorization: Bearer <JWT_TOKEN>`  
 
 **Expected Response (`200 OK`):**  
 
@@ -533,14 +533,14 @@ Authorization: Bearer <JWT_TOKEN>
 
 - **Validation**:  
     - Status code is `200`  
-    - Data array berisi daftar department  
-    - Message menyatakan data berhasil diambil  
+    - The data array contains a list of departments.  
+    - Message indicates data was successfully retrieved  
 
 
 ### Scenario 2: Invalid Token - Unauthorized Access
 
 - **Precondition**:  
-    - Gunakan token yang sudah dimanipulasi atau tidak valid (expired/salah format)  
+    - Use a manipulated or invalid token (expired/malformed)  
 
 
 **Header:**  
@@ -564,8 +564,8 @@ Authorization: Bearer invalid.token.here
 
 - **Validation**:  
     - Status code is `401`  
-    - Message menjelaskan bahwa autentikasi gagal  
-    - Tidak ada data yang dikembalikan  
+    - Message explains that authentication failed  
+    - No data returned  
 
 
 ### 3. Kafka Security Event Monitoring Scenario  
@@ -636,7 +636,7 @@ SELECT * FROM security_event ORDER BY timestamp DESC;
 
 You should see an entry like:  
 
-![image](/uploads/55e01da21135e138ff9c3e69f19be5c3/image.png)
+![Image](https://github.com/user-attachments/assets/83aa3b55-6326-4541-a27b-38edcf893764)  
 
 
 
