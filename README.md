@@ -192,7 +192,8 @@ cd kafka
 ```  
 
 2.  **Start the Kafka environment**  
-**NOTE**: Your local environment must have Java 17+ installed.  
+**NOTE**: Your local environment must have `Java 17+` installed. Kafka in this project runs in **KRaft (Kafka Raft Metadata)** mode, which means it **does not require Zookeeper** to operate.
+KRaft mode provides a simplified architecture where Kafka manages its metadata internally using its own Raft-based consensus protocol.    
 
 - Generate a Cluster UUID:  
 ```bash
@@ -208,7 +209,8 @@ bin/kafka-storage.sh format --standalone -t $KAFKA_CLUSTER_ID -c config/server.p
 ```bash
 bin/kafka-server-start.sh config/server.properties
 ```  
-Once the Kafka server has successfully launched, you will have a basic Kafka environment running and ready to use.  
+
+Once the Kafka server has successfully launched, you will have a basic Kafka environment running with KRaft mode, ready for use—no Zookeeper required.  
 
 
 ### 🧰 4. Install `make` (Optional but Recommended)  
@@ -409,7 +411,7 @@ make test
 
 ### 🔧 Run Locally (Non-containerized)
 
-Ensure Redis and PostgreSQL are running locally, then:
+Ensure PostgreSQL and Kafka are running locally, then:
 
 ```bash
 make dev
