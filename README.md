@@ -173,8 +173,7 @@ echo $JAVA_HOME
 
 2. Once installed, create the following databases:  
 ```sql
-CREATE DATABASE quarkus_kafka_postgresql_dev;  
-CREATE DATABASE quarkus_kafka_postgresql_test;  
+CREATE DATABASE department;  
 ```  
 
 These databases are used for development and automated testing, respectively.  
