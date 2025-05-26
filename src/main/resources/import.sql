@@ -51,11 +51,11 @@ INSERT INTO user_roles (user_id, role_id) VALUES
 -- Name: roles_id_seq; This belongs to table roles
 --
 
-SELECT pg_catalog.setval('roles_id_seq', 3, true);
+SELECT pg_catalog.setval('roles_id_seq', 2, true);
 
 
 --
 -- Name: users_id_seq; This belongs to table users
 --
 
-SELECT pg_catalog.setval('users_id_seq', 6, true);
+SELECT pg_catalog.setval('users_id_seq', 2, true);
