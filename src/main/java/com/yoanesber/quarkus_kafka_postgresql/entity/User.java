@@ -91,9 +91,6 @@ public class User {
     @Column(name = "deleted_at", columnDefinition = "timestamp with time zone")
     private LocalDateTime deletedAt;
 
-    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<UserRole> userRoles = new ArrayList<>();
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "user_roles", // nama tabel join
