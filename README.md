@@ -300,7 +300,7 @@ quarkus.hibernate-orm.sql-load-script=import.sql
 
 # JWT configuration
 mp.jwt.verify.publickey.location=publicKey.pem
-mp.jwt.verify.issuer=http://localhost:8081/realms/quarkus
+mp.jwt.verify.issuer=http://localhost:8080/realms/quarkus
 mp.jwt.verify.token.age=48
 quarkus.http.auth.permission.authenticated.paths=/api/*
 quarkus.http.auth.permission.authenticated.policy=authenticated
