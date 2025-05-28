@@ -78,42 +78,33 @@ The project follows a modular architecture to ensure **separation of concerns**,
 
 ```bash
 📁 quarkus-kafka-postgresql/
-├── 📂src/
-│   ├── 📂main/
-│   │   ├── 📂docker/
-│   │   │   ├── 📂app/                       # Dockerfile untuk Quarkus application (runtime container)
-│   │   │   │   └── Dockerfile              # Base image, copy JAR/dependencies, ENTRYPOINT
-│   │   │   └── 📂postgres/                 # Dockerfile untuk PostgreSQL jika menggunakan custom image/init
-│   │   │       ├── Dockerfile              # Optional: bisa dipakai jika mau extend dari image postgres:alpine
-│   │   │       └── init.sql                # Init script: buat database, user, dan grant permission
-│   │   ├── 📂java/
-│   │   │   ├── 📂config/serializer/         # Custom Jackson serializers/deserializers (e.g., for LocalDateTime, Instant)
-│   │   │   ├── 📂context/                   # Custom context such as RequestContext to hold metadata (e.g., user info)
-│   │   │   ├── 📂dto/                       # DTO classes for API input/output
-│   │   │   ├── 📂entity/                    # JPA/Hibernate entity classes mapped to DB tables
-│   │   │   ├── 📂exception/                 # Custom exception classes
-│   │   │   ├── 📂handler/                   # Exception mappers using JAX-RS or Quarkus `@Provider`
-│   │   │   ├── 📂mapping/                   # MapStruct or manual mappers between DTO and entity
-│   │   │   ├── 📂repository/                # Data access layer using Panache or JpaRepository
-│   │   │   ├── 📂resources/                 # JAX-RS resource classes for REST API endpoints
-│   │   │   └── 📂service/                   # Business service logic
-│   │   │       └── 📂kafka/                 # Kafka producers and consumers
-│   │   └── 📂resources/
-│   │       ├── application.properties       # Main Quarkus config file (e.g., DB, Kafka, JWT, profiles)
-│   │       ├── generate-jwt-keys.sh         # Script to generate RSA private/public keys
-│   │       ├── import.sql                   # Initial SQL for seeding database (executed on first start)
-│   │       ├── privateKey.pem               # RSA private key for signing JWT
-│   │       └── publicKey.pem                # RSA public key for verifying JWT
-│   └── 📂test/java/                          # Unit and integration test classes
-├── 📂target/                                 # Maven build output (ignored by Git)
-├── .dockerignore                             # Ignore files for Docker build context
-├── .gitignore                                # Ignore files for Git version control
-├── Makefile                                  # Task automation (build, run, setup Kafka/PostgreSQL, etc.)
-├── mvnw                                       # Maven wrapper for portability
-├── mvnw.cmd                                   # Maven wrapper for Windows
-├── pom.xml                                    # Maven build config (dependencies, plugins, profiles)
-├── README.md                                  # Project description, usage, setup guide
-└── wait-kafka.bat                             # Windows batch script to wait for Kafka readiness
+└── 📂src/
+    ├── 📂main/
+    │   ├── 📂docker/
+    │   │   ├── 📂app/                       # Dockerfile untuk Quarkus application (runtime container)
+    │   │   │   └── Dockerfile              # Base image, copy JAR/dependencies, ENTRYPOINT
+    │   │   └── 📂postgres/                 # Dockerfile untuk PostgreSQL jika menggunakan custom image/init
+    │   │       ├── Dockerfile              # Optional: bisa dipakai jika mau extend dari image postgres:alpine
+    │   │       └── init.sql                # Init script: buat database, user, dan grant permission
+    │   ├── 📂java/
+    │   │   ├── 📂config/serializer/         # Custom Jackson serializers/deserializers (e.g., for LocalDateTime, Instant)
+    │   │   ├── 📂context/                   # Custom context such as RequestContext to hold metadata (e.g., user info)
+    │   │   ├── 📂dto/                       # DTO classes for API input/output
+    │   │   ├── 📂entity/                    # JPA/Hibernate entity classes mapped to DB tables
+    │   │   ├── 📂exception/                 # Custom exception classes
+    │   │   ├── 📂handler/                   # Exception mappers using JAX-RS or Quarkus `@Provider`
+    │   │   ├── 📂mapping/                   # MapStruct or manual mappers between DTO and entity
+    │   │   ├── 📂repository/                # Data access layer using Panache or JpaRepository
+    │   │   ├── 📂resources/                 # JAX-RS resource classes for REST API endpoints
+    │   │   └── 📂service/                   # Business service logic
+    │   │       └── 📂kafka/                 # Kafka producers and consumers
+    │   └── 📂resources/
+    │       ├── application.properties       # Main Quarkus config file (e.g., DB, Kafka, JWT, profiles)
+    │       ├── generate-jwt-keys.sh         # Script to generate RSA private/public keys
+    │       ├── import.sql                   # Initial SQL for seeding database (executed on first start)
+    │       ├── privateKey.pem               # RSA private key for signing JWT
+    │       └── publicKey.pem                # RSA public key for verifying JWT
+    └── 📂test/java/                          # Unit and integration test classes
 ```  
 
 This clean separation allows the application to **scale well**, supports **test-driven development**, and adheres to best practices in **enterprise application design**.  
