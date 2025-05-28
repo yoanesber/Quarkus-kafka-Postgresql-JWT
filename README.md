@@ -86,7 +86,7 @@ The project follows a modular architecture to ensure **separation of concerns**,
 │   │   │   └── 📂postgres/                 # Dockerfile untuk PostgreSQL jika menggunakan custom image/init
 │   │   │       ├── Dockerfile              # Optional: bisa dipakai jika mau extend dari image postgres:alpine
 │   │   │       └── init.sql                # Init script: buat database, user, dan grant permission
-│   │   ├── 📂java/com/yoanesber/quarkus_kafka_postgresql/
+│   │   ├── 📂java/
 │   │   │   ├── 📂config/serializer/         # Custom Jackson serializers/deserializers (e.g., for LocalDateTime, Instant)
 │   │   │   ├── 📂context/                   # Custom context such as RequestContext to hold metadata (e.g., user info)
 │   │   │   ├── 📂dto/                       # DTO classes for API input/output
