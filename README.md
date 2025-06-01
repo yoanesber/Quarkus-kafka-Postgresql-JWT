@@ -445,7 +445,7 @@ http://localhost:8080
 Endpoint:  
 
 ```bash
-POST http://localhost:8081/auth/login
+POST http://localhost:8080/auth/login
 Content-Type: application/json
 ```  
 
@@ -584,7 +584,7 @@ UPDATE users SET is_account_non_expired = false WHERE id = 5;
 **Endpoint:**  
 
 ```bash
-GET http://localhost:8081/api/v1/departments?page=0&size=2
+GET http://localhost:8080/api/v1/departments?page=0&size=2
 Authorization: Bearer <JWT_TOKEN>
 ```  
 
@@ -661,7 +661,7 @@ Authorization: Bearer invalid.token.here
 
 **Endpoint:**  
 ```bash
-POST http://localhost:8081/auth/login
+POST http://localhost:8080/auth/login
 ```  
 
 **Invalid Request Body:**  
